@@ -1,0 +1,53 @@
+Turbo Assembler	 Version 3.1	    03/10/14 12:26:51	    Page 1
+hw1.ASM
+
+
+
+      1	0000				     .model tiny
+      2	0000				     .code
+      3					     org 100h
+      4	0100			     _:
+      5	0100  B4 09			     mov ah, 9
+      6	0102  BA 0107r			     lea dx, msg
+      7	0105  EB 11			     jmp nxt
+      8	0107  48 65 6C 6C 6F 2C	20+  msg     db	"Hello,	world !",13,10,'$'
+      9	      77 6F 72 6C 64 20	21+
+     10	      0D 0A 24
+     11	0118			     nxt:
+     12	0118  CD 21			     int 21h
+     13	011A  C3			     ret
+     14				     end _
+Turbo Assembler	 Version 3.1	    03/10/14 12:26:51	    Page 2
+Symbol Table
+
+
+
+
+Symbol Name			  Type	 Value
+
+??DATE				  Text	 "03/10/14"
+??FILENAME			  Text	 "hw1	  "
+??TIME				  Text	 "12:26:51"
+??VERSION			  Number 030A
+@32BIT				  Text	 0
+@CODE				  Text	 DGROUP
+@CODESIZE			  Text	 0
+@CPU				  Text	 0101H
+@CURSEG				  Text	 _TEXT
+@DATA				  Text	 DGROUP
+@DATASIZE			  Text	 0
+@FILENAME			  Text	 HW1
+@INTERFACE			  Text	 00H
+@MODEL				  Text	 1
+@STACK				  Text	 DGROUP
+@WORDSIZE			  Text	 2
+MSG				  Byte	 DGROUP:0107
+NXT				  Near	 DGROUP:0118
+_				  Near	 DGROUP:0100
+
+Groups & Segments		  Bit Size Align  Combine Class
+
+DGROUP				  Group
+  _DATA				  16  0000 Word	  Public  DATA
+  _TEXT				  16  011B Word	  Public  CODE
+
