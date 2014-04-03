@@ -6,27 +6,27 @@ _:		jmp	start
 
 m1		db	' ','$'
 
-start:		call	geti
-		mov	m1,al
-		call	prni
-_c:		xor	ah,ah
-		int	16h
-		push	ax		; ->
-		call	geti
-		cmp	al,m1
-		mov	m1,al
-		je	_0
-		call	prni
+start:		call	geti ;узнаем значение IF
+		mov	m1,al        ;записываем значение IF
+		call	prni     ;печатаем значение
+_c:		xor	ah,ah        ;обнуляем ah
+		int	16h          ;смотрим ввели ли что-либо (это что-то вернется в ax)
+		push	ax		 ; ->
+		call	geti     ; смотрим на теперешнее значение IF (вдруг оно теперь не такое, как до вызова int 16?)
+		cmp	al,m1        ; если значение изменилось, то после cmp ZF (zero flag) будет 1
+		mov	m1,al        
+		je	_0           ; если ZF==0 (то есть значение не изменилось, то пропускаем печать значения IF)
+		call	prni     ; если ZF==1, то печатаем новое значение
 _0:		pop	ax		; <-
-		cmp	al,1Bh
-		jne	_c
+		cmp	al,1Bh  ; смотрим, а не Esc ли мы нажали (1Bh - код Esc)
+		jne	_c      ; если ввели Esc, то ZF==0 и мы уходим, иначе прогоняем еще раз цикл  _c
 		ret
 
-geti:		pushf
+geti:		pushf ;смотрим на значение IF
 		pop	ax
-		shr	ax,9
-		and	al,1
-		add	al,'0'
+		shr	ax,9 ;так как бит отвечающий за IF в регистре флагов девятый, то сдвинем все на 9, чтобы увидеть значение этого бита.
+		and	al,1 ;обнуляем все кроме последнего бита, в котором содержится значение 
+		add	al,'0' ;чтобы получить код символа (0 или 1) в ASCII прибавляем код "0", то бишь 30. 
 		ret
 
 prni:		mov	dx,offset m1
